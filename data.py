@@ -143,17 +143,17 @@ while True:
     if keyboard.is_pressed('a'):
         frame = screen(screen_locate)
         # remember to add the rest of your path to the folders!
-        isWritten = cv2.imwrite(f'simple_kart_ai/training/1\Left{i1}.png', frame)
+        isWritten = cv2.imwrite(f'training/1\Leftd{i1}.png', frame)
         print(f"Photo Number a")
         i1 += 1
     if keyboard.is_pressed('d'):
         frame = screen(screen_locate)
-        isWritten = cv2.imwrite(f'simple_kart_ai/training/2\Right{i2}.png', frame)
+        isWritten = cv2.imwrite(f'training/2\Rightd{i2}.png', frame)
         print(f"Photo Number d")
         i2 += 1
     elif keyboard.is_pressed('w'):
         frame = screen(screen_locate)
-        isWritten = cv2.imwrite(f'simple_kart_ai/training/training/0\Straight{i3}.png', frame)
+        isWritten = cv2.imwrite(f'training/0\Straightd{i3}.png', frame)
         print(f"Photo Number w")
         i3 += 1
     

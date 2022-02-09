@@ -102,7 +102,7 @@ def run():
     model = define_model()
         # create data generator
     print("train_dir")
-    training_dir = 'D:\Coding\AIsociety\Mario_Kart\\training'
+    training_dir = 'training'
     image_size = (200, 200)
 
     train_datagen = ImageDataGenerator(
@@ -137,7 +137,7 @@ def run():
             subset="validation",
             seed=42)
     print("test_dir")
-    test_dir = 'D:\Coding\AIsociety\Mario_Kart'
+    test_dir = ''
 
     test_datagen = ImageDataGenerator(rescale=1./255,zoom_range=.2,
             rotation_range = 40,
@@ -151,7 +151,7 @@ def run():
             shuffle=False)
         # fit model
     history = model.fit(train_generator, steps_per_epoch=len(train_generator),
-        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=50 , verbose=1)
+        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=1 , verbose=1)
     # evaluate model
 
     plt.plot(history.history['loss'])
@@ -162,7 +162,7 @@ def run():
     plt.legend(['train', 'val'], loc='upper left')
     plt.show()
 
-    base = pd.read_csv("D:\Coding\AIsociety\Mario_Kart\\test_classes.csv")
+    base = pd.read_csv("test_classes.csv")
     print(base.head)
     base = base.ClassId
     print(type(base))
