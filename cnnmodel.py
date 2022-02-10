@@ -151,7 +151,7 @@ def run():
             shuffle=False)
         # fit model
     history = model.fit(train_generator, steps_per_epoch=len(train_generator),
-        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=1 , verbose=1)
+        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=100 , verbose=1)
     # evaluate model
 
     plt.plot(history.history['loss'])
