@@ -1,6 +1,6 @@
 '''
 written by Denver Conger
-
+Edited By Derek Muller
 conda activate SAI
 pip install pydirectinput
 pip install pui
