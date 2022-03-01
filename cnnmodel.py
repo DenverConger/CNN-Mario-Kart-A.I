@@ -2,7 +2,12 @@
 written by Denver Conger
 
 conda activate SAI
+pip install tensorflow
+pip install matplotlib
 pip install seaborn
+pip install pandas
+pip install numpy
+pip install scikit-learn
 '''
 from keras_preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -16,6 +21,11 @@ from sklearn.metrics import accuracy_score,confusion_matrix
 import seaborn as sn
 from tensorflow.keras.optimizers import SGD
 from keras.layers import LeakyReLU
+
+
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+print(dir_path)
 
 # Do not INclude this is using it on colab!
 # config = tf2.ConfigProto()
@@ -96,13 +106,33 @@ def define_model():
 
 	# model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['sparse_categorical_accuracy'])
 	# return model
-
+import sys
 def run():
 	# define model
-    model = define_model()
+    try:
+        m = sys.argv.index('-model') + 1
+        model_path = sys.argv[m]
+    except:
+        model_path = None
+    try:
+        e = sys.argv.index('-epochs')+1
+        epochs = int(sys.argv[e])
+    except:
+        epochs = 5
+    try:
+        ti = sys.argv.index('-training')+1
+        training_dir = f'{dir_path}\\'+sys.argv[ti]
+    except:
+        training_dir = f'{dir_path}\\training'
+
+    if model_path is None:
+        model = define_model()
+        model_path = 'kart_model'
+    else:
+        model = tf.keras.models.load_model(f'{dir_path}\\'+model_path)
         # create data generator
     print("train_dir")
-    training_dir = 'training'
+    # training_dir = 'D:\Coding\AIsociety\Mario_Kart\\training'
     image_size = (200, 200)
 
     train_datagen = ImageDataGenerator(
@@ -137,7 +167,11 @@ def run():
             subset="validation",
             seed=42)
     print("test_dir")
-    test_dir = ''
+    # test_dir = 'D:\Coding\AIsociety\Mario_Kart'
+    # test_dir = 'C:\Users\dmull\Desktop\Programming_New\AI\Mario\SetUp\simple_kart_ai\simple_kart_ai'
+    test_dir = os.path.dirname(os.path.realpath(__file__))
+    print(test_dir)
+
 
     test_datagen = ImageDataGenerator(rescale=1./255,zoom_range=.2,
             rotation_range = 40,
@@ -151,8 +185,11 @@ def run():
             shuffle=False)
         # fit model
     history = model.fit(train_generator, steps_per_epoch=len(train_generator),
-        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=100 , verbose=1)
+        # validation_data=validation_generator, validation_steps=len(validation_generator), epochs=50 , verbose=1)
+        validation_data=validation_generator, validation_steps=len(validation_generator), epochs=epochs , verbose=1)
     # evaluate model
+    model.save(model_path)
+
 
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
@@ -162,7 +199,8 @@ def run():
     plt.legend(['train', 'val'], loc='upper left')
     plt.show()
 
-    base = pd.read_csv("test_classes.csv")
+    # base = pd.read_csv("D:\Coding\AIsociety\Mario_Kart\\test_classes.csv")
+    base = pd.read_csv(f"{dir_path}\\test_classes.csv")
     print(base.head)
     base = base.ClassId
     print(type(base))
@@ -199,5 +237,5 @@ def run():
     # plt.figure(figsize=(10,7))
     sn.set(font_scale=1.4) # for label size
     sn.heatmap(df_cm, annot=True, annot_kws={"size": 16}) # font size
-    model.save('kart_model')
+    # model.save('kart_model')
 run()
